@@ -6,7 +6,6 @@ TARGET=vision_statement_hollenbt_thomasza
 default: pdf
 
 dvi: ${TARGET}.tex 
-#	run latex twice to get references correct
 	latex $(TARGET).tex
 	bibtex $(TARGET)
 	latex $(TARGET).tex
