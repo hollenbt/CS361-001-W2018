@@ -1,0 +1,226 @@
+\documentclass[12pt]{article}
+%\usepackage{times}
+\usepackage{cite}
+\usepackage{graphicx}
+\usepackage{url}
+\setlength{\parskip}{1em}
+\setlength{\parindent}{0em}
+%this is a comment
+\title{CS 361 \\ Implementation 1 Assignment: \\ Digital Ghostwriter}
+\author{Thomas Hollenberg (hollenbt), Zachary Thomas (thomasza),\\ Amar Raad (raadv), Jared Tence (tencej), \\  Zech DeCleene (decleenz)}
+\date{March 4th, 2018}
+
+\begin{document}
+\maketitle
+\newpage
+\tableofcontents
+
+\newpage
+
+\section{Product Release}
+
+Digital Ghostwriter can be downloaded from this link:\newline
+\textbf{https://drive.google.com/open?id=1LwcFmKpDTOaiYsbOkKB-YgMAYTYpz3MK}
+
+We are including a demo video in case you have any issues with setup or installation:\newline
+\textbf{https://media.oregonstate.edu/media/t/0\_ik5a5fx4}
+
+Once downloaded you should extract the contents of the zip file, all the contents of the program will be contained within the dgw directory.
+Within the dgw directory you can find a file called README that gives in depth instructions on how to install/setup and run Digital Ghostwriter. 
+
+Digital ghostwriter is designed to be run on a Linux machine that is using some graphical desktop environment (We used CentOS 7, with Gnome).
+
+\textbf{Installation / Setup:}
+
+1. python3.6 or higher must be installed on your system.
+
+2. Install tensorflow on your system at the directory ~/venvs/tensorflow.
+Guide for CentOS 7: https://gist.github.com/thoolihan/28679cd8156744a62f88
+Guide for other: https://www.tensorflow.org/install/
+
+3. Extract the contents of the dgw.zip file. You have completed installation / setup.
+
+\textbf{Running Digital Ghostwriter:}
+
+To run Digital Ghostwriter open the dgw directory and run the command: ./exeDGW
+
+Alternately if you installed tensorflow to a directory that was not listed above run the following commands: \newline
+source ~/(location of tensorflow)/bin/activate \newline
+python3.6 dgw.py
+
+\newpage
+\textbf{Viewing genre and authors:}
+
+From the main menu select "genre", here you will see current completed genre (You should see horror).
+Next click on horror to see the current authors for the horror genre. 
+
+\textbf{Creating a horror story:}
+
+From the main menu select "write", in this version of the software you can only select done for each option (horror genre, with a word count of 150 is selected by default). 
+
+Once you get to the page where it is asking you to name your story hitting done will start writing your story (This may take up to five minutes based on the computer you are using). 
+When you see a page that says that 'My story' has been written and saved, you may exit the program (red button in the top right corner of the screen). 
+
+Your finished story can be found in the "stories" folder, it will be named myStory.txt. Multiple runs of the program will generate different stories.
+
+\section{User Story}
+
+\subsection{Exit Program}
+\begin{itemize}
+\item Team: Tommy and Zach
+\item Problems:  No major problems were faced when creating an exit button for our GUI interface.
+\item Time Cost:  1 unit
+\item Status: Implemented/Tested
+\item Remaining: Nothing
+\item UML sequence diagram: The UML sequence diagram was useful and contained everything we needed for the implementation of this user story
+\end{itemize}
+
+\subsection{Previous Page}
+\begin{itemize}
+\item Team: Tommy and Zach
+\item Problems:  No major problems were faced when creating an previous page button for our GUI interface.
+\item Time Cost: 1 unit
+\item Status: Implemented/Tested
+\item Remaining: Nothing
+\item UML sequence diagram: The UML sequence diagram was useful and contained everything we needed for the implementation of this user story
+\end{itemize}
+
+\subsection{Horror Genre}
+\begin{itemize}
+\item Team: Tommy and Zach
+\item Problems: Deciding which authors to include and sourcing their novels. Training the model took too long in the virtual machine, and had to be done on one of our desktops with an external graphics card that could run tensorflow-gpu. The trained model was too large to push to GitHub, so we had to find an alternate way to share the model with the rest of the team.
+\item Time Cost: 1 unit 
+\item Status: Implemented/Tested
+\item Remaining: Nothing. The model successfully produces output in the horror style.
+\item UML sequence diagram: There was no UML sequence diagram for this user story.
+\end{itemize}
+
+\subsection{View Genres}
+\begin{itemize}
+\item Team: Four of us met up before lecture on Tuesday to implement this user story.
+\item Problems: Until now, all of our UI pages were generated statically during startup, and simply "lifted" to be displayed. We had to figure out how to create new UI pages dynamically, and how to get a list of all the files in a directory.
+\item Time Cost: 2 unit 
+\item Status: Implemented/Tested
+\item Remaining: The functionality is completely there, but the pages are bare-bones and need to be prettied-up to fit the style of the rest of the application.
+\item UML sequence diagram: The  UML sequence diagram was useful in that it helped identify what had to be done, but a spike would have been more useful for this implementation.
+\end{itemize}
+
+\subsection{View Authors}
+\begin{itemize}
+\item Team: Four of us met up before lecture on Tuesday to implement this user story.
+\item Problems: Much of the code from the View Genres implementation was also useful to implement this user story. However, we ran into some issues with Inheritance in Python (which behaves differently than C/C++). Finding a workaround took some additional time.
+\item Time Cost: 2 unit 
+\item Status: Implemented/Tested
+\item Remaining: The functionality is completely there, but the pages are bare-bones and need to be prettied-up to fit the style of the rest of the application.
+\item UML sequence diagram: The  UML sequence diagram was useful in that it helped identify what had to be done, but a spike would have been more useful for this implementation.
+\end{itemize}
+
+\section{Design changes and rationale}
+
+The customers decided to move towards a more dynamic design, currently the different screens that make up the programs menus
+are single static images with functionality based on predetermined regions that are clicked on by users. 
+
+The biggest drawback of such a design is that other images can not be layered on top of these static images and this functionality makes it impossible to have fields that change graphically (such as what we want to happen with the word count setting for next weeks user stories). To fix this issue we are moving towards a different design that uses background colors, multiple frames, and graphics applied to buttons. 
+
+These changes will allow us to have a more dynamic and interactive design that features user feedback.
+
+We successfully implemented all of the user stories planned for this week, so no schedule changes were necessary. 
+
+\section{Tests}
+
+\subsection{Back Button (Component)}
+
+\begin{itemize}
+\item Input Values: Click on the back button. 
+\item Test Execution: Imageclick and imagemapper functions are called to get command for back button. Back button commands are called
+\item Test Results: The (correct) previous page is displayed.
+\end{itemize}
+
+\subsection{View Genre (User Story)}
+
+\begin{itemize}
+\item Input Values: Click on a Genre on the Genre Page.
+\item Test Execution: Imageclick and imagemapper functions are called to get command. Genre Authors page is lifted to be shown, authors of Genre added to Genre Authors Page.
+\item Test Results: The Genre Authors Page is displayed with all authors of a certain genre displayed
+\end{itemize}
+
+\subsection{Adding Genre (Future Implementation)}
+
+\begin{itemize}
+\item Input Values: Click on add Genre Button on the Genre Page. Enter Genre name from pop up.
+\item Test Execution: New Genre will be created with specified page. It will be added to the Genre Page to be displayed and create Write page.
+\item Test Results: Genre and Write Page now has a genre with the user entered name that can be selected to view authors or create story using that genre. When a document is produced after selecting a newly added genre it should produce a document that uses the trained tensorflow files for that genre.
+\end{itemize}
+
+\subsection{Removing Genre (Future Implementation)}
+
+\begin{itemize}
+\item Input Values: Click on remove Genre Button and select Genre to Remove.
+\item Test Execution: Genre will be removed along with all related files such as trained tensorflow files. Genre will also be removed from the Genre and Write Page.
+\item Test Results: Genre no longer appears on the Genre and Write Pages. Any trained files created using that Genre has been deleted.
+\end{itemize}
+
+\section{Meeting Report }
+
+\subsection{Upcoming user stories / Schedule:}
+Comedy genre\newline
+Due: Next week.\newline
+Tasks:\newline
+1. Create genre model.\newline
+2. Display genre in genre and write menus.\newline
+3. Enable usage of model to create stories.\newline
+Prerequisites: None.\newline
+Effort estimate: 2 units.\newline
+
+Science fiction genre\newline
+Due: Next week.\newline
+Tasks:\newline
+1. Create genre model.\newline
+2. Display genre in genre and write menus.\newline
+3. Enable usage of model to create stories.\newline
+Prerequisites: None.\newline
+Effort estimate: 2 units.\newline
+
+Naming story\newline
+Due: Next week.\newline
+Tasks:\newline
+1. Create pop up that allows user to enter name of story.\newline
+2. Names the document created by tensorflow to that name.\newline
+Prerequisites:\newline
+Generate story as text document must be implemented first.\newline
+Effort estimate: 2 units.\newline
+
+Selectable word count\newline
+Due: Next week.\newline
+Tasks:\newline
+1. Create text entry field that allows user to indicate desired word count.\newline
+2. Pass the value of this field to the sample.py program upon submission so\newline
+that the output contains the desired word count.\newline
+Prerequisites:\newline
+Generate story as text document must be implemented first.\newline
+Any genre.\newline
+Effort estimate: 4 units.
+
+Generate story as text document\newline
+Due: Next week.\newline
+Tasks:\newline
+1. Setup user selections (otherwise use defaults).\newline
+2. Run genre model through tensorflow to create story.\newline
+3. Output tensorflow to text document in "stories” directory. Prerequisites:\newline
+Any genre.\newline
+Genre must be viewable before this feature can be implemented.\newline
+Effort estimate: 10 units.
+
+\subsection{This week's progress:}
+Added more functionality to our Digital Ghostwriter program, including the five planned user stories: exit program, previous page, horror genre, view genres, and view authors.
+
+\subsection{Goals for next week:}
+Tuesday meeting at 3pm at JOHN to prepare for the next stage of Digital Ghostwriter development. Complete our new set of user stories. 
+
+\subsection{Contribution of team members:}
+All team members gave feedback and worked on our assignment.
+
+\subsection{Were customers able to meet with the team:}
+Yes. Team including customers met to complete assignment, as well as continued to refine goals and schedule. 
+
+\end{document}
