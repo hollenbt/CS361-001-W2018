@@ -70,7 +70,7 @@ Your finished story can be found in the "stories" folder, it will be named (the 
 \begin{itemize}
 \item Team: Jared, Zech, and Amar
 \item Problems: Deciding which authors to include and sourcing their novels. Additionally, we had trouble with unusual characters in some of the texts, which were unable to be interpreted correctly. Training the model took too long in the virtual machine, and had to be done on one of our desktops with an external graphics card that could run tensorflow-gpu. The trained model was too large to push to GitHub, so we had to find an alternate way to share the model with the rest of the team.
-\item Time Cost: 2 unit 
+\item Time Cost: 3 unit 
 \item Status: Implemented/Tested
 \item Remaining: Nothing. The model successfully produces output in the comedy style.
 \item UML sequence diagram: There was no UML sequence diagram for this user story.
@@ -80,7 +80,7 @@ Your finished story can be found in the "stories" folder, it will be named (the 
 \begin{itemize}
 \item Team: Jared, Zech, and Amar
 \item Problems: Deciding which authors to include and sourcing their novels. Training the model took too long in the virtual machine, and had to be done on one of our desktops with an external graphics card that could run tensorflow-gpu. The trained model was too large to push to GitHub, so we had to find an alternate way to share the model with the rest of the team.
-\item Time Cost: 1 unit 
+\item Time Cost: 3 unit 
 \item Status: Implemented/Tested
 \item Remaining: Nothing. The model successfully produces output in the science fiction style.
 \item UML sequence diagram: There was no UML sequence diagram for this user story.
@@ -90,7 +90,7 @@ Your finished story can be found in the "stories" folder, it will be named (the 
 \begin{itemize}
 \item Team: Tommy and Zach
 \item Problems: We had to ensure that the suggested name was a valid Unix filename, which included checking that its length be less than 256 and consist only of allowed characters, and prevent the story from being written if these criteria were not met.
-\item Time Cost:  1 unit
+\item Time Cost:  2 unit
 \item Status: Implemented/Tested
 \item Remaining: Nothing.
 \item UML sequence diagram: The UML sequence diagram was useful and contained everything we needed for the implementation of this user story.
@@ -100,7 +100,7 @@ Your finished story can be found in the "stories" folder, it will be named (the 
 \begin{itemize}
 \item Team: Tommy and Zach
 \item Problems: We had to ensure that the specified word count was a valid positive number, and prevent the story from being written if this criterion was not met.
-\item Time Cost: 1 unit 
+\item Time Cost: 2 unit 
 \item Status: Implemented/Tested
 \item Remaining: Nothing.
 \item UML sequence diagram: The  UML sequence diagram was useful and contained everything we needed for the implementation of this user story.
@@ -110,7 +110,7 @@ Your finished story can be found in the "stories" folder, it will be named (the 
 \begin{itemize}
 \item Team: Everyone
 \item Problems: Writing the story was easy once we implemented the two previous user stories. Python makes creating child processes incredibly easy. By simply checking the return value, we could easily determine whether to go to the success page or generate an error message and return to the write page.
-\item Time Cost: 1 unit 
+\item Time Cost: 5 unit 
 \item Status: Implemented/Tested
 \item Remaining: Nothing.
 \item UML sequence diagram: The  UML sequence diagram was useful and contained everything we needed for the implementation of this user story.
@@ -128,6 +128,8 @@ We successfully implemented all of the user stories planned for this week, so no
 
 As for the estimates of user story effort, we noticed that the genres took about 50 percent more units of effort than we expected, we ended up having trouble finding source material, and some of the source material had special characters that did not transfer well to a Linux system. We ended up resolving all of these issues for the final product. 
 
+Inversely the "write story" user story took about half the effort we expected as we did much of the work last week while setting up the horror genre, adding the other genres and settings to it was relatively simple.
+
 \section{Refactoring}
 
 We renamed our Page subclasses to be more descriptive, and removed one that had become obsolete. This also required re-indexing of a static array of pages. Additional refactoring, perhaps moving some shared methods from the subclasses to the Page superclass, would be desirable if there was more time and this project were to continue past the end of this week. 
@@ -136,18 +138,40 @@ As a team we realize there is plenty of potential to refactor our code, though  
 
 \section{Tests}
 
-\subsection{Verify\_Fields (Unit Test)}
+\subsection{Verify\_Fields (Integration Test)}
 
-The verify\_fields method verifies that three variables are valid before attempting to write a story: word count, story name, and genre selection. These variables are independent of each other (as long as the others are valid, so the program is not interrupted), so they were tested independently.
+The verify\_fields method verifies that three variables are valid before attempting to write a story: word count, story name, and genre selection. These variables are independent of each other (as long as the others are valid, so the program is not interrupted), to test them in an integrated fashion we run all combinations of these unit tests to see if we still get the expected result.
 
-\subsubsection{Word Count}
+Here are the expected results:\newline
+
+Valid WC, Valid SN, Valid G = SUCCESS\newline
+Invalid WC, Valid SN, Valid G = FAILED\newline
+Valid WC, Invalid SN, Valid G = FAILED\newline
+Valid WC, Valid SN, Invalid G = FAILED\newline
+Valid WC, Invalid SN, Invalid G = FAILED\newline
+Invalid WC, Valid SN, Invalid G = FAILED\newline
+Invalid WC, Invalid SN, Valid G = FAILED\newline
+Invalid WC, Invalid SN, Invalid G = FAILED\newline
+
+Here are the results we got:\newline
+
+Valid WC, Valid SN, Valid G = SUCCESS\newline
+Invalid WC, Valid SN, Valid G = FAILED\newline
+Valid WC, Invalid SN, Valid G = FAILED\newline
+Valid WC, Valid SN, Invalid G = FAILED\newline
+Valid WC, Invalid SN, Invalid G = FAILED\newline
+Invalid WC, Valid SN, Invalid G = FAILED\newline
+Invalid WC, Invalid SN, Valid G = FAILED\newline
+Invalid WC, Invalid SN, Invalid G = FAILED\newline
+
+\subsubsection{Word Count (Unit Test)}
 \begin{itemize}
-\item Input Values: Selected genre, valid story name, and a string of characters for the word count, not necessarily numeric. The input space is too large for exhaustive testing, so we chose strings from different regions of the input space. For example, invalid strings such negative numbers, floating point numbers, numbers larger than one million, and any string containing a non-numeric character. Only positive integers less than one million should be valid.
+\item Input Values: Selected genre, valid story name, and a string of characters for the word count, not necessarily numeric. The input space is too large for exhaustive testing, so we chose strings from different regions of the input space. For example, invalid strings such negative numbers, floating point numbers, numbers larger than one million, and any string containing a non-numeric character. Only positive integers no greater than one ten thousand should be valid.
 \item Test Execution: The verify\_fields method was called by clicking on the "Done" button.
-\item Test Results: A valid string was expected to generate no error message and proceed to writing the story. An invalid string was expected to generate an error message describing the requirements for the word count (i.e. positive integer less than a million).
+\item Test Results: A valid string was expected to generate no error message and proceed to writing the story. An invalid string was expected to generate an error message describing the requirements for the word count (i.e. positive integer no greater than a ten thousand).
 \end{itemize}
 
-\subsubsection{Story Naming}
+\subsubsection{Story Naming (Unit Test)}
 
 \begin{itemize}
 \item Input Values: Selected genre, valid word count, and story name string. As with the word count, the input space is too large for exhaustive testing, so we chose strings from different regions of the input space. We required that story names be between 1 and 255 characters, inclusive, and only allowed alphanumeric characters, underscores, and dashes.
@@ -155,7 +179,7 @@ The verify\_fields method verifies that three variables are valid before attempt
 \item Test Results: A valid story name was expected to generate no error message and proceed to writing the story. An invalid string was expected to generate an error message describing the requirements for the story name (i.e. length requirements and allowed characters).
 \end{itemize}
 
-\subsubsection{Genre Selection}
+\subsubsection{Genre Selection (Unit Test)}
 
 \begin{itemize}
 \item Input Values: Valid word count, valid story name, and a selected genre. Various genres were selected by clicking on the genre buttons on the WriteSpecs page. The empty string was also tested (by clicking "Done" without selecting a genre). Unlike the other two variables, the input space is very small (since there are only a few potential genres, plus no genre), so exhaustive testing is possible.
@@ -163,20 +187,11 @@ The verify\_fields method verifies that three variables are valid before attempt
 \item Test Results: Any selected genre was expected to generate no error message and proceed to writing the story. If no genre was selected, the expected result was to generate an error message informing the user to please select a genre.
 \end{itemize}
 
-\subsection{Write Story (Integration Test)}
-
-\begin{itemize}
-\item Input Values:  Integer for word count (1000), Test for name, and either
-Horror, Comedy, or Science Fiction for Genre. Word Count and Name are kept constant to only see the effects of a change in Genre
-\item Test Execution: The test will check if the output files words exist within the English language. It will go through every word within the output file and check whether they exist in an online dictionary. If there exists words within the written story that don't exist in the online dictonary then the test returns FAILED. If the test concludes and all words in the document are in the online dictonary, then the test returns SUCCESS. 
-\item Test Results: All test results return SUCCES.
-\end{itemize}
-
 \subsection{Word Count / File name (Integration Test)}
 
 \begin{itemize}
-\item Input Values: Integer for word count (1(min), 50, 500, 1000000(max)),\newline
-Strings for name (A, WORD, MULTIPLEWORDS, EXTRAMULTIPLEWORDS),\newline
+\item Input Values: Integer for word count (1(min), 50, 500, 10000(max)),\newline
+Strings for name (A, WORD, MULTIPLEWORDS),\newline
 Genre set to (Horror) to prevent changes in output based on changes to genre.
 \item Test Execution: This test focuses on comparing input with output and confirming the combined results of both word count and file name returns expected output. The testing script runs the program and fills out all possible combinations of the input values (see above). It then runs a word count command on the given file name. If that file name is not found then that test is returned as FAILED, if that file name is found and the word count returned is not equal to the word count entered as input then that test returns as FAILED. If the file name is found and the word count returned is equal to the word count entered as input then that test returns SUCCESS.
 \item Test Results: All test values returned SUCCESS.
@@ -186,7 +201,7 @@ Genre set to (Horror) to prevent changes in output based on changes to genre.
 
 \begin{itemize}
 \item Input Values: Genre (Horror, Comedy, Science Fiction), \newline
-Word Count (1000), we want a high word count to allow us to make accurate comparisons to the source text. We do not change the word count.
+Word Count (100), we do not change the word count.
 Name (TextTest), name doesn't change to prevent changes in name changing our output.  
 \item Test Execution: This test focuses on seeing if words in our output text match words in the source used to create the genre model. The testing script runs the program and fills out all possible combinations of the input values (see above). Each instance of the test opens the output text file (TextTest.txt) and compares each word in the document with all files in the genre folder that is its source text. If it fails to find less than 90 percent of all of its words in the source text then the test is returned as FAILED, if the test is able to find 90 percent or greater matches it returns SUCCESS.
 \item Test Results: All test values returned SUCCESS.
